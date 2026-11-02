@@ -1,37 +1,27 @@
-import java.sql.SQLOutput;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.Date;
 
-public class Transactions {
-    private Date date;
-    private Time time;
+public class Transaction {
+
+    private LocalDateTime dateTime;
     private String description;
     private String vendor;
     private double amount;
 
 
-    public Transactions(Date date, Time time, String description, String vendor, double amount) {
-        this.date = date;
-        this.time = time;
+    public Transaction(LocalDateTime dateTime, String description, String vendor, double amount) {
+        this.dateTime=dateTime;
         this.description = description;
         this.vendor = vendor;
         this.amount = amount;
     }
 
-
-    public Date getDate() {
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-
-    public Time getTime() {
-        return time;
-    }
-    public void setTime(Time time) {
-        this.time = time;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
 
@@ -58,8 +48,8 @@ public class Transactions {
         this.amount = amount;
     }
 
-    public void display(String currentTra){
-        System.out.println("Date: "+ge);
+    public void display(){
+        System.out.printf("Date: %s, Time: %s, Description: %s Vendor: %d, Double: %s", this.dateTime, this.description, this.vendor, this.amount);
 
     }
 
