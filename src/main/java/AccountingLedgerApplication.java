@@ -1,10 +1,8 @@
 import java.io.*;
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -17,13 +15,13 @@ public class AccountingLedgerApplication {
 
         mainMenu(scanner, transactions);
 
-        System.out.println("Thank you for choosing our bank!");
+        System.out.print("Thank you for choosing our bank!");
     }
 
     public static ArrayList<Transaction> loadTransactions() {
         //  FileReader fileReader=new FileReader("src/main/resources/transactions.csv");
        ArrayList<Transaction> transactions= new ArrayList<>();
-        LocalDateTime currentTime=LocalDateTime.now();
+       // LocalDateTime currentTime=LocalDateTime.now();
 
 
         String fileName = "src/main/resources/transactions.csv";
@@ -66,7 +64,7 @@ public class AccountingLedgerApplication {
 
         boolean done=false;
         do {
-            System.out.println(menuPrompt);
+            System.out.print(menuPrompt);
             String input=scanner.nextLine();
 
             switch (input){
@@ -81,7 +79,7 @@ public class AccountingLedgerApplication {
     }
 
     private static void ledgerMenu(Scanner scanner, ArrayList<Transaction> transactions){
-        System.out.println("This is your ledger menu");
+        System.out.print("This is your ledger menu");
         String ledgerMenu= """
                 A)All
                 D)Deposits
@@ -94,7 +92,7 @@ public class AccountingLedgerApplication {
         boolean done=false;
 
         do {
-            System.out.println(ledgerMenu);
+            System.out.print(ledgerMenu);
             String userInput=scanner.nextLine();
             switch (userInput){
                 case "A", "a"-> allEntries(transactions);
@@ -111,7 +109,7 @@ public class AccountingLedgerApplication {
 
 
     private static void reports(Scanner scanner, ArrayList<Transaction> transactions) {
-        System.out.println("This is your Reports menu");
+        System.out.print("This is your Reports menu");
         String ledgerMenu = """
                     1) Month To Date
                     2) Previous Month
@@ -126,7 +124,7 @@ public class AccountingLedgerApplication {
         boolean done = false;
 
         do {
-            System.out.println(ledgerMenu);
+            System.out.print(ledgerMenu);
             String userInput = scanner.nextLine();
             switch (userInput) {
                 case "1" -> monthToDate(transactions);
@@ -152,14 +150,24 @@ public class AccountingLedgerApplication {
     }
 
     private static void yearToDate(ArrayList<Transaction> transactions) {
-        //LocalDate month=yearToDate();
+        int lastYear=LocalDate.now().getYear()-1;
+        int count=0;
+        for (Transaction t:transactions){
+            int currentYear=t.getDateTime().getYear();
+            if (currentYear>=lastYear){
+                t.display();
+                count++;
+            }
+
+        }
+        System.out.print("There are "+count+" transactions from last year to date");
     }
 
     private static void previousMonth(ArrayList<Transaction> transactions) {
-        YearMonth month=YearMonth.now().minusMonths(1);//finds last month 2026-11
+        YearMonth lastMonth=YearMonth.now().minusMonths(1);//finds last month 2026-11
         for (Transaction tr:transactions){
-            YearMonth lastMonth=YearMonth.from(tr.getDateTime());//returns the given month
-            if (lastMonth.equals(month)){
+            YearMonth month=YearMonth.from(tr.getDateTime());//returns the given month
+            if (month.equals(lastMonth)){
                 tr.display();
             }
         }
@@ -167,18 +175,27 @@ public class AccountingLedgerApplication {
 
     private static void monthToDate(ArrayList<Transaction> transactions) {
 
-//        for (Transaction tr:transactions){
-//           int month= tr.getDateTime().getMonthValue()-1;
-//           int now=LocalDate.now().getMonthValue();
-//
-//        }
+        int lastMonth=LocalDate.now().getMonthValue()-1;//Ask Dave to confirm it!!
+        if(lastMonth==0) {
+            lastMonth = 12;
+        }
+        for (Transaction tr:transactions){
+            int thisMonth=tr.getDateTime().getMonthValue();
+            if (thisMonth>=lastMonth){
+              tr.display();
+          }
 
-    }
 
+
+
+            }
+
+
+        }
 
     private static void addDeposit(ArrayList<Transaction> transactions, Scanner scanner)  {
 
-        System.out.println("How much would you like to deposit today? Please type like Invoice 1001 paid|Joe|1500.00");
+        System.out.print("How much would you like to deposit today? Please type like Invoice 1001 paid|Joe|1500.00");
         String depositInput=scanner.nextLine();
         LocalDateTime now=LocalDateTime.now();
         String depositInfoCsv=now.toLocalDate()+"|"+now.toLocalTime().withNano(0)+"|"+depositInput+"\n";
@@ -217,7 +234,7 @@ public class AccountingLedgerApplication {
 
 
     private static void makePayment(ArrayList<Transaction> transactions, Scanner scanner){
-        System.out.println("Enter payment info like ergonomic keyboard|Amazon|-89.50");
+        System.out.print("Enter payment info like ergonomic keyboard|Amazon|-89.50");
         String paymentInfoInput =scanner.nextLine();
         LocalDateTime now=LocalDateTime.now();
        // String[] parts=paymentInfoInput.split(Pattern.quote("|"));
@@ -271,7 +288,7 @@ public class AccountingLedgerApplication {
 
 
     private static void searchByVendor(ArrayList<Transaction> transactions, Scanner scanner){
-        System.out.println("Please enter the vendor: ");
+        System.out.print("Please enter the vendor: ");
         String input=scanner.nextLine();
         for (Transaction t:transactions) {
             if (input.equalsIgnoreCase(t.getVendor())){
@@ -283,6 +300,7 @@ public class AccountingLedgerApplication {
     }
 
     private static void customSearch(ArrayList<Transaction> transactions, Scanner scanner){
+
 
     }
 
