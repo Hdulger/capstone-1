@@ -3,6 +3,8 @@ import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -18,13 +20,38 @@ public class AccountingLedgerApplication {
         System.out.println("Thank you for choosing our bank!");
     }
 
-    public static ArrayList<Transaction> loadTransactions()  {
-      //  FileReader fileReader=new FileReader("src/main/resources/transactions.csv");
-        ArrayList<Transaction> transactions= new ArrayList<>();
+    public static ArrayList<Transaction> loadTransactions() {
+        //  FileReader fileReader=new FileReader("src/main/resources/transactions.csv");
+       ArrayList<Transaction> transactions= new ArrayList<>();
         LocalDateTime currentTime=LocalDateTime.now();
 
-        Transaction transaction1= new Transaction(currentTime,"Foods", "Trader Joe`s", 29.99);
-        return transactions;
+
+        String fileName = "src/main/resources/transactions.csv";
+
+        try {
+            FileReader fileReader = new FileReader(fileName);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = bufferedReader.readLine();//throw away header
+            line = bufferedReader.readLine();
+            while (line != null) {
+                if(!line.isBlank()){
+                Transaction transaction = parseTransaction(line);
+                transactions.add(transaction);
+                }
+                    line = bufferedReader.readLine();
+
+
+            }
+            bufferedReader.close();
+            fileReader.close();
+
+        }catch (FileNotFoundException e){
+            System.err.println(e.getMessage());
+        }catch (IOException ex){
+            System.err.println("There is an in and out problem "+ex.getMessage());
+        }
+
+       return transactions;
     }
 
     private static void mainMenu(Scanner scanner, ArrayList<Transaction> transactions){
@@ -116,15 +143,36 @@ public class AccountingLedgerApplication {
     }
 
     private static void previousYear(ArrayList<Transaction> transactions) {
+        int lastYear=LocalDate.now().getYear()-1;
+        for(Transaction t:transactions){
+            if(t.getDateTime().getYear()==lastYear){
+                t.display();
+            }
+        }
     }
 
     private static void yearToDate(ArrayList<Transaction> transactions) {
+        //LocalDate month=yearToDate();
     }
 
     private static void previousMonth(ArrayList<Transaction> transactions) {
+        YearMonth month=YearMonth.now().minusMonths(1);//finds last month 2026-11
+        for (Transaction tr:transactions){
+            YearMonth lastMonth=YearMonth.from(tr.getDateTime());//returns the given month
+            if (lastMonth.equals(month)){
+                tr.display();
+            }
+        }
     }
 
     private static void monthToDate(ArrayList<Transaction> transactions) {
+
+//        for (Transaction tr:transactions){
+//           int month= tr.getDateTime().getMonthValue()-1;
+//           int now=LocalDate.now().getMonthValue();
+//
+//        }
+
     }
 
 
@@ -159,34 +207,14 @@ public class AccountingLedgerApplication {
         LocalDate date=LocalDate.parse(parts[0]);
         LocalTime time=LocalTime.parse(parts[1]);
         LocalDateTime dateTime=date.atTime(time);
+
         String description =parts[2];
         String vendor=parts[3];
         double price=Double.parseDouble(parts[4]);
 
         return new Transaction(dateTime, description, vendor, price);
     }
-    private static ArrayList<Transaction> readTransactions(String file)  {
-        ArrayList<Transaction> transactions=new ArrayList<>();
 
-        try {
-            FileReader fileReader=new FileReader("src/main/resources/transactions.csv");
-            BufferedReader bufferedReader=new BufferedReader(fileReader);
-
-            String line;
-            while ((line=bufferedReader.readLine())!=null){
-                if(!line.isEmpty())
-                {
-                    transactions.add(parseTransaction(line));
-                }
-            }
-
-        }catch (IOException e){
-            System.err.println(e.getMessage());
-        }
-
-        return transactions;
-
-    }
 
     private static void makePayment(ArrayList<Transaction> transactions, Scanner scanner){
         System.out.println("Enter payment info like ergonomic keyboard|Amazon|-89.50");
@@ -211,8 +239,6 @@ public class AccountingLedgerApplication {
     }
 
     private static void allEntries(ArrayList<Transaction> transactions){
-        System.out.println(transactions.size());
-        //ArrayList<Transaction> transactions1=readTransactions();
         for (Transaction t:transactions){
             t.display();
         }
@@ -221,10 +247,23 @@ public class AccountingLedgerApplication {
     }
 
     private static void deposits(ArrayList<Transaction> transactions){
+        for (Transaction tr:transactions){
+            if(tr.getAmount()>0 || tr.getAmount()==0){
+                tr.display();
+            }
+
+        }
+
 
 
     }
     private static void payments(ArrayList<Transaction> transactions){
+        for(Transaction tr:transactions){
+            if (tr.getAmount()<0){
+                tr.display();
+
+            }
+        }
 
     }
 
@@ -232,6 +271,14 @@ public class AccountingLedgerApplication {
 
 
     private static void searchByVendor(ArrayList<Transaction> transactions, Scanner scanner){
+        System.out.println("Please enter the vendor: ");
+        String input=scanner.nextLine();
+        for (Transaction t:transactions) {
+            if (input.equalsIgnoreCase(t.getVendor())){
+                t.display();
+
+            }
+        }
 
     }
 

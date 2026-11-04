@@ -49,7 +49,7 @@ public class Transaction {
     }
 
     public void display(){
-        System.out.printf("Date: %s, Time: %s, Description: %s Vendor: %d, Double: %s", this.dateTime, this.description, this.vendor, this.amount);
+        System.out.printf("Date&Time: %s, Description: %s, Vendor: %s, Amount: %.2f%n", this.dateTime, this.description, this.vendor, this.amount);
 
     }
 
