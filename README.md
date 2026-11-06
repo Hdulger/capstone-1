@@ -14,7 +14,7 @@ transactions, and running reports for a coffee shop. Transactions are stored in 
 - A)All  -> Displays all transactions.
 - D)Deposits -> Displays only deposits (positive amounts).
 - P)Payments -> Displays only payments (negative amounts).
-- R)Reports 
+- R)Reports
 - H)Home -> Returns to the Home Screen.
 
 **R)Reports**
@@ -26,7 +26,7 @@ transactions, and running reports for a coffee shop. Transactions are stored in 
 4) Previous Year -> Displays transactions from the previous calendar year.
 5) Search by Vendor  -> Displays transactions that match the vendor name you enter.
 6) Custom Search **(Bonus)** -> Filters transactions by date, description, vendor, or amount. Press Enter to skip a filter.
-Enter "0" to go back to the Ledger menu.
+   Enter "0" to go back to the Ledger menu.
 
 
 
