@@ -230,7 +230,7 @@ public class AccountingLedgerApplication {
         }
     }
     private static void customSearch(ArrayList<Transaction> transactions, Scanner scanner) {
-        System.out.print("“Enter search criteria. Press Enter to skip any field.”");
+        System.out.println("“Enter search criteria. Press Enter to skip any field.”");
         System.out.print("Start Date (yyyy//MM/dd): ");
         String startDate = scanner.nextLine().trim();
 
@@ -243,7 +243,7 @@ public class AccountingLedgerApplication {
         System.out.print("Vendor: ");
         String vendor = scanner.nextLine().trim();
 
-        System.out.print("Amount");
+        System.out.print("Amount:");
         String amountText = scanner.nextLine();
 
         LocalDate startD=null;

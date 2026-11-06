@@ -45,5 +45,5 @@ output in transactions csv field:
 For make payment, only enter the description, vendor, and amount, as shown in the example.
 
 ```text
-2026-11-05|11:15:00|Coffee beans|Bean Supplier|-45.00
+Coffee beans|Bean Supplier|-45.00
 ```
