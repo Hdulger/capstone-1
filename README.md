@@ -47,3 +47,12 @@ For make payment, only enter the description, vendor, and amount, as shown in th
 ```text
 Coffee beans|Bean Supplier|-45.00
 ```
+I’m proud of this part of my code. At first, I subtracted 1 from the month number. In January, that gave me 0, so I used an `if` statement to change it to 12 for December. Then I found a simpler way. `minusMonths(1)` handles that automatically.
+```
+YearMonth lastMonth = YearMonth.now().minusMonths(1);//finds last month 2026-11
+for (Transaction tr : transactions) {
+YearMonth month = YearMonth.from(tr.getDateTime());//returns the given year month
+if (month.equals(lastMonth)) {
+tr.display();
+}
+```
